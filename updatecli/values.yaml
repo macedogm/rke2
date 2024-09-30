@@ -3,3 +3,7 @@ github:
   email: "41898282+github-actions[bot]@users.noreply.github.com"
   username: "UPDATECLI_GITHUB_ACTOR"
   token: "UPDATECLI_GITHUB_TOKEN"
+rke2:
+  org: "macedogm"
+  repo: "rke2"
+  branch: "master"

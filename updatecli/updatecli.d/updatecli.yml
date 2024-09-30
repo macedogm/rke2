@@ -1,0 +1,47 @@
+---
+name: "Bump Updatecli version"
+scms:
+  default:
+    kind: github
+    spec:
+      user: {{ .github.user }}
+      email: {{ .github.email }}
+      username: {{ .github.username }}
+      token: {{ requiredEnv .github.token }}
+      owner: {{ .rke2.org }}
+      repository: {{ .rke2.repo }}
+      branch: {{ .rke2.branch }}
+      commitmessage:
+        title: Bump Updatecli version
+      force: true
+
+actions:
+  github:
+    title: Bump Updatecli version
+    kind: github/pullrequest
+    scmid: default
+    spec:
+      automerge: false
+      mergemethod: squash
+      usetitleforautomerge: true
+      labels:
+        - dependencies
+
+sources:
+  updatecli:
+    name: Get Updatecli latest release
+    kind: githubrelease
+    spec:
+      owner: updatecli
+      repository: updatecli
+      token: {{ requiredEnv .github.token }}
+
+targets:
+  gha:
+    name: Update Updatecli version in GHA workflow
+    kind: yaml
+    scmid: default
+    spec:
+      engine: yamlpath
+      file: .github/workflows/updatecli.yml
+      key: $.jobs.updatecli.steps[?(@.id == 'updatecli')].with.version
