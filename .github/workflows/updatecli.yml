@@ -1,17 +1,14 @@
 name: "Updatecli: Dependency Management"
-
 on:
   schedule:
     # Runs at 06 PM UTC
     - cron: '0 18 * * *'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
 permissions:
   contents: write
   issues: write
   pull-requests: write
-
 jobs:
   updatecli:
     runs-on: ubuntu-latest
@@ -19,19 +16,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Install Go
         uses: actions/setup-go@v5
         with:
           go-version: 'stable'
           cache: false
-
       - name: Install Updatecli
         id: updatecli
         uses: updatecli/updatecli-action@v2
         with:
-          version: v0.72.0
-
+          version: v0.84.1
       - name: Delete leftover UpdateCLI branches
         run: |
           gh pr list \
@@ -50,7 +44,6 @@ jobs:
           done
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Apply Updatecli
         # Never use '--debug' option, because it might leak the access tokens.
         run: "updatecli apply --clean --config ./updatecli/updatecli.d/ --values ./updatecli/values.yaml"
