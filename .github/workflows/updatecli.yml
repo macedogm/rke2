@@ -27,6 +27,7 @@ jobs:
           cache: false
 
       - name: Install Updatecli
+        id: updatecli
         uses: updatecli/updatecli-action@v2
         with:
           version: v0.72.0
